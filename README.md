@@ -7,7 +7,7 @@ This package provides a simple script to search for lines in a file that contain
 To install `andre_search`, follow these steps:
 
 ```bash
-git clone https://github.com/yourusername/andre_search.git
+git clone https://github.com/andre-vauvelle/andre_search.git
 cd andre_search
 pip install .
 ```
