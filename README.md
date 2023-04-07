@@ -20,13 +20,6 @@ To use this script, simply pass the path to the input file containing the source
 andre_search /path/to/input_file.txt
 ```
 
-If you would like to run in a docker container use:
-
-```bash
-docker build -t andre_search .
-docker run --rm andre_search python search.py "/path/to/input_file.txt"
-```
-
 ## Development
 This package includes pre-commit hooks to help ensure code quality. To set up these hooks including pytests, run the following command:
 ```bash
