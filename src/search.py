@@ -1,10 +1,10 @@
 import argparse
 import re
 import sys
-from typing import List, Tuple
+from typing import List, Tuple, Iterable
 
 
-def parse_input(file_path: str) -> Tuple[List[str], str]:
+def parse_input(file_path: str) -> Tuple[Iterable[str], str]:
     """
     Parse the input file and return the source text and search term.
 
@@ -12,7 +12,7 @@ def parse_input(file_path: str) -> Tuple[List[str], str]:
         file_path: The path to the input file.
 
     Returns:
-        A tuple containing the source text (a list of strings) and the search
+        A tuple containing the source text (an iterable of strings) and the search
          term (a string).
 
     Raises:
@@ -21,16 +21,23 @@ def parse_input(file_path: str) -> Tuple[List[str], str]:
     """
     try:
         with open(file_path, "r") as file:
-            lines = file.readlines()
-            if not lines:
+            last_line = None
+            for last_line in file:
+                pass
+
+            if last_line is None:
                 raise ValueError(f"The file {file_path} is empty.")
+
             non_word_pattern = re.compile(r"[^a-zA-Z]+")
-            search_term = re.sub(non_word_pattern, " ", lines[-1]).strip()
-            source_text = [
-                re.sub(non_word_pattern, " ", line.strip()).strip()
-                for line in lines[:-1]
-            ]
-        return source_text, search_term
+            search_term = re.sub(non_word_pattern, " ", last_line).strip()
+
+        def source_text_gen():
+            with open(file_path, "r") as file:
+                for line in file:
+                    if line != last_line:
+                        yield re.sub(non_word_pattern, " ", line.strip()).strip()
+
+        return source_text_gen(), search_term
     except FileNotFoundError:
         print(f"Error: The file {file_path} could not be found.")
         sys.exit(1)
@@ -39,12 +46,12 @@ def parse_input(file_path: str) -> Tuple[List[str], str]:
         sys.exit(1)
 
 
-def find_matching_lines(source_text: List[str], search_term: str) -> List[str]:
+def find_matching_lines(source_text: Iterable[str], search_term: str) -> List[str]:
     """
     Find all lines in the source text that contain the search term.
 
     Args:
-        source_text: A list of strings representing the source text.
+        source_text: An iterable of strings representing the source text.
         search_term: The term to search for.
 
     Returns:
@@ -94,3 +101,4 @@ def parse_args() -> argparse.Namespace:
 
     args_p = parser.parse_args()
     return args_p
+

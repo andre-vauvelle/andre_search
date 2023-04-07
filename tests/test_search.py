@@ -21,7 +21,8 @@ another
 
 def test_parse_input(sample_input_file):
     source_text, search_term = parse_input(sample_input_file)
-    assert len(source_text) == 3
+    source_text_list = list(source_text)  # Convert the generator to a list
+    assert len(source_text_list) == 3
     assert search_term == "another"
 
 
