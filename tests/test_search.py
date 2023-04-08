@@ -47,6 +47,18 @@ def test_empty_input_file(tmpdir, capsys):
             main()
 
 
+def test_single_line_input_error(tmpdir, capsys):
+    single_line_input_file = tmpdir.join("single_line_input.txt")
+    with open(single_line_input_file, "w") as f:
+        f.write("single line\n")
+
+    with patch(
+        "argparse.ArgumentParser.parse_args",
+        return_value=MagicMock(file_path=str(single_line_input_file)),
+    ):
+        with pytest.raises(ValueError):
+            main()
+
 def test_matching_lines_format(sample_input_file, capsys):
     with patch(
         "argparse.ArgumentParser.parse_args",
