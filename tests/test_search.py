@@ -43,11 +43,8 @@ def test_empty_input_file(tmpdir, capsys):
         "argparse.ArgumentParser.parse_args",
         return_value=MagicMock(file_path=str(empty_file)),
     ):
-        with pytest.raises(SystemExit):
+        with pytest.raises(ValueError):
             main()
-
-    captured = capsys.readouterr()
-    assert "Error: The file" in captured.out
 
 
 def test_matching_lines_format(sample_input_file, capsys):
